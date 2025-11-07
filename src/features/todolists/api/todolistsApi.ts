@@ -1,6 +1,7 @@
 import type {Todolist} from "./todolistsApi.types"
 import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
 import {AUTH_TOKEN} from "@/common/constants";
+import {DomainTodolist} from "@/features/todolists/model/todolists-slice.ts";
 
 
 export const todolistsApi = createApi({
@@ -14,18 +15,16 @@ export const todolistsApi = createApi({
       headers.set("Authorization", `Bearer ${localStorage.getItem(AUTH_TOKEN)}`)
     },
   }),
-  endpoints: (builder) => {
-    return {
-      getTodolists: builder.query<Todolist[], void>({
-        query: () => {
-          return {
-            method: "get",
-            url: '/todo-lists"',
-          }
-        },
-      }),
-    }
-  },
+  endpoints: (builder) => ({
+    fetchTodolists: builder.query<DomainTodolist[], void> ({
+      query: () => '/todo-lists',
+      transformResponse: (todolists: Todolist[]) => {
+        return todolists.map ((tl) => {
+          return {...tl, filter: 'all', entityStatus: 'idle'}
+        })
+      }
+    }),
+  }),
 })
 
 // export const todolistsApi = {
@@ -43,3 +42,5 @@ export const todolistsApi = createApi({
 //     return instance.delete<BaseResponse>(`/todo-lists/${id}`)
 //   },
 // }
+
+ export const {useFetchTodolistsQuery} = todolistsApi
