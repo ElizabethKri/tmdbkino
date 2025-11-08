@@ -143,9 +143,11 @@ export const {
 } = todolistsSlice.actions
 export const todolistsReducer = todolistsSlice.reducer
 
+
+
 export type DomainTodolist = Todolist & {
   filter: FilterValues
   entityStatus: RequestStatus
 }
-
+//
 export type FilterValues = "all" | "active" | "completed"

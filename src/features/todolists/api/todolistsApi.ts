@@ -1,6 +1,8 @@
 import type {Todolist} from "./todolistsApi.types"
 import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
 import {AUTH_TOKEN} from "@/common/constants";
+
+import {BaseResponse} from "@/common/types";
 import {DomainTodolist} from "@/features/todolists/model/todolists-slice.ts";
 
 
@@ -24,6 +26,17 @@ export const todolistsApi = createApi({
         })
       }
     }),
+
+    createTodolists: builder.mutation<BaseResponse<{item: Todolist}>, string> ({
+      query: (title) => {
+        return {
+          method: 'post',
+          url: '/todo-lists',
+          body: {title}
+        }
+      }
+
+    }),
   }),
 })
 
@@ -43,4 +56,4 @@ export const todolistsApi = createApi({
 //   },
 // }
 
- export const {useFetchTodolistsQuery, useLazyFetchTodolistsQuery} = todolistsApi
+ export const {useFetchTodolistsQuery, useLazyFetchTodolistsQuery, useCreateTodolistsMutation} = todolistsApi
