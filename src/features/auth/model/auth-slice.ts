@@ -15,6 +15,9 @@ export const authSlice = createAppSlice({
     selectIsLoggedIn: (state) => state.isLoggedIn,
   },
   reducers: (create) => ({
+    setIsLoggedIn: create.reducer<{isLoggedIn: boolean}>((state, action) => {
+      state.isLoggedIn = action.payload.isLoggedIn
+    }),
     loginTC: create.asyncThunk(
       async (data: LoginInputs, { dispatch, rejectWithValue }) => {
         try {
@@ -90,6 +93,6 @@ export const authSlice = createAppSlice({
   }),
 })
 
-export const { selectIsLoggedIn } = authSlice.selectors
-export const { loginTC, logoutTC, initializeAppTC } = authSlice.actions
+
+export const { loginTC, logoutTC, initializeAppTC} = authSlice.actions
 export const authReducer = authSlice.reducer
