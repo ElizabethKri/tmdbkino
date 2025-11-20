@@ -5,7 +5,7 @@ import {CategoryMovies} from "@/features/movies/ui/CategoryMovies/CategoryMovies
 import {FilteredMovies} from "@/features/movies/ui/FilteredMovies/FilteredMovies"
 import {Search} from "@/features/movies/ui/Search/Search"
 import {Favorites} from "@/features/movies/ui/Favorites/Favorites"
-import {MovieDetails} from "@/features/movies/ui/MovieDetails/MovieDetails.tsx"
+import {MovieDetails} from "@/features/movies/ui/MovieDetails/MovieDetails"
 
 export const Path = {
     Main: "/",

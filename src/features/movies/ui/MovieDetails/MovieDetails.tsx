@@ -13,10 +13,6 @@ import {BoxMovieSx, BoxTextSx, ImgSx} from "@/features/movies/ui/MovieDetails/Mo
 const IMAGE_BASE_URL = "https://image.tmdb.org/t/p/original"
 const POSTER_PLACEHOLDER = "https://placehold.co/500x750?text=No+Image"
 
-export  type GenProps = {
-    name: string
-    id: string
-}
 
 export const MovieDetails = () => {
     const {movieId} = useParams()
@@ -117,7 +113,7 @@ export const MovieDetails = () => {
                         {data.genres && data.genres.length > 0 && (
 
                             <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap", mb: 3 }}>
-                                {data.genres.map((gen: GenProps) => (
+                                {data.genres.map((gen) => (
                                     <Chip key={gen.id} label={gen.name} variant="outlined" />
                                 ))}
                             </Box>

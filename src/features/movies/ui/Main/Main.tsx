@@ -63,12 +63,12 @@ export const Main = () => {
     return (
         <>
             {randomMovie && <BackdropHero movie={randomMovie} />}
-            <Container maxWidth={"lg"}>
+        <Container maxWidth={"lg"}>
                 <MoviesSection
                     title="Popular Movies"
                     subtitle={`${popularData.total_results} popular movies`}
                     movies={popularData.results}
-                    viewMorePath={Path.CategoryMovies}
+                    viewMorePath={`${Path.CategoryMovies}?category=popular&page=1`}
                 />
                 
                 {topRatedData && topRatedData.results.length > 0 && (
@@ -76,7 +76,7 @@ export const Main = () => {
                         title="Top Rated"
                         subtitle={`${topRatedData.total_results} top rated movies`}
                         movies={topRatedData.results}
-                        viewMorePath={Path.CategoryMovies}
+                        viewMorePath={`${Path.CategoryMovies}?category=top_rated&page=1`}
                     />
                 )}
 
@@ -85,7 +85,7 @@ export const Main = () => {
                         title="Upcoming"
                         subtitle={`${upcomingData.total_results} upcoming movies`}
                         movies={upcomingData.results}
-                        viewMorePath={Path.CategoryMovies}
+                        viewMorePath={`${Path.CategoryMovies}?category=upcoming&page=1`}
                     />
                 )}
 
@@ -94,10 +94,10 @@ export const Main = () => {
                         title="Now Playing"
                         subtitle={`${nowPlayingData.total_results} now playing movies`}
                         movies={nowPlayingData.results}
-                        viewMorePath={Path.CategoryMovies}
+                        viewMorePath={`${Path.CategoryMovies}?category=now_playing&page=1`}
                     />
                 )}
-            </Container>
+        </Container>
         </>
 
     )

@@ -1,5 +1,5 @@
 import {baseApi} from "@/app/baseApi.ts";
-import {MovieDetails, PesponceBase} from "@/features/movies/api/MainApi.types.ts";
+import {MovieCategory, MovieDetails, PesponceBase} from "@/features/movies/api/MainApi.types.ts";
 
 export const mainApi = baseApi.injectEndpoints({
 
@@ -20,6 +20,13 @@ export const mainApi = baseApi.injectEndpoints({
             query: () => '/movie/now_playing',
             providesTags: ['Main']
         }),
+        fetchMoviesByCategory: builder.query<PesponceBase, { category: MovieCategory, page?: number }>({
+            query: ({category, page = 1}) => ({
+                url: `/movie/${category}`,
+                params: { page },
+            }),
+            providesTags: ['Main']
+        }),
         fetchMovieDetails: builder.query<MovieDetails, number>({
             query: (movieId) => `/movie/${movieId}`,
             providesTags: ['Main']
@@ -32,5 +39,6 @@ export const {
     useFetchTopRatedQuery,
     useFetchUpcomingQuery,
     useFetchNowPlayingQuery,
+    useFetchMoviesByCategoryQuery,
     useFetchMovieDetailsQuery
 } = mainApi
