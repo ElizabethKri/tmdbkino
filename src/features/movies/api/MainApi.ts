@@ -8,7 +8,19 @@ export const mainApi = baseApi.injectEndpoints({
             query: () => '/movie/popular',
             providesTags: ['Main']
         }),
+        fetchTopRated: builder.query<PesponceBase, void> ({
+            query: () => '/movie/top_rated',
+            providesTags: ['Main']
+        }),
+        fetchUpcoming: builder.query<PesponceBase, void> ({
+            query: () => '/movie/upcoming',
+            providesTags: ['Main']
+        }),
+        fetchNowPlaying: builder.query<PesponceBase, void> ({
+            query: () => '/movie/now_playing',
+            providesTags: ['Main']
+        }),
     }),
 })
 
-export const {useFetchMainQuery} = mainApi
+export const {useFetchMainQuery, useFetchTopRatedQuery, useFetchUpcomingQuery, useFetchNowPlayingQuery} = mainApi
