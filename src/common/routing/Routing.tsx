@@ -1,4 +1,4 @@
-import {Main} from "@/app/Main"
+import {Main} from "@/features/movies/ui/Main/Main.tsx"
 import {PageNotFound} from "@/common/components"
 import {Route, Routes} from "react-router"
 import {CategoryMovies} from "@/features/movies/ui/CategoryMovies/CategoryMovies"
