@@ -10,6 +10,8 @@ import {boxCategorySx} from "@/features/movies/ui/CategoryMovies/CategoryMovies.
 export const CategoryMovies = () => {
     const {data, isLoading, isError} = useFetchMainQuery()
 
+    console.log(data)
+
     if (isLoading) {
         return (
             <Container maxWidth={"lg"}>
