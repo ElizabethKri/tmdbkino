@@ -1,6 +1,6 @@
 import "./App.css"
 import {selectThemeMode} from "@/app/app-slice"
-import {ErrorSnackbar, Header} from "@/common/components"
+import {ErrorSnackbar, Header, Footer} from "@/common/components"
 import {useAppSelector} from "@/common/hooks"
 import {Routing} from "@/common/routing"
 import {getTheme} from "@/common/theme"
@@ -28,7 +28,10 @@ export const App = () => {
       <div className={styles.app}>
         <CssBaseline />
         <Header />
-        <Routing />
+        <main className={styles.main}>
+          <Routing />
+        </main>
+        <Footer />
         <ErrorSnackbar />
       </div>
     </ThemeProvider>
