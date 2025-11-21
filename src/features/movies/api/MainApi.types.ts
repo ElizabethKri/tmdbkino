@@ -31,7 +31,24 @@ export type MovieDetails = Movie & {
     homepage?: string
     budget?: number
     revenue?: number
-    genres?: { id: number; name: string }[]
+    genres?: Genre[]
     production_countries?: { iso_3166_1: string; name: string }[]
     spoken_languages?: { english_name: string; iso_639_1: string; name: string }[]
+}
+
+export type Genre = {
+    id: number
+    name: string
+}
+
+export type GenresResponse = {
+    genres: Genre[]
+}
+
+export type DiscoverMoviesParams = {
+    sort_by: string
+    page?: number
+    vote_average_gte?: number
+    vote_average_lte?: number
+    with_genres?: string
 }
