@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import {Movie} from "@/features/movies/api/MainApi.types.ts";
-import {SearchMenu} from "@/features/movies/ui/Search/SearchMenu/SearchMenu.tsx";
+import {SearchMain} from "@/features/movies/ui/Search/SearchMain/SearchMain.tsx";
 
 type BackdropHeroProps = {
  movie: Movie
@@ -29,10 +29,9 @@ export const BackdropHero = ({movie}: BackdropHeroProps) => {
         <Box
             sx={imgUrl}
         >
-
             <Container maxWidth={"lg"} sx={ContainerSx}>
                 <Box sx={BoxSx}>
-                    <SearchMenu/>
+                    <SearchMain/>
                     <Typography variant="h3" component="h1" sx={{ mb: 2, fontWeight: 'bold' }}>
                         {movie.title}
                     </Typography>

@@ -10,9 +10,10 @@ import FavoriteIcon from "@mui/icons-material/Favorite"
 import CardActions from "@mui/material/CardActions"
 import CardActionArea from "@mui/material/CardActionArea"
 import {Link} from "react-router"
-import {useState} from "react"
+import {useState, useEffect} from "react"
 import {Movie} from "@/features/movies/api/MainApi.types.ts"
 import {Path} from "@/common/routing"
+import {isFavorite, toggleFavorite as toggleFavoriteUtil} from "@/common/utils/favorites"
 
 const IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w500"
 const POSTER_PLACEHOLDER = "https://placehold.co/500x750?text=No+Image"
@@ -28,13 +29,33 @@ const getRatingColor = (rating: number) => {
 }
 
 export const MovieCard = ({movie}: MovieCardProps) => {
-    const [isFavorite, setIsFavorite] = useState(false)
+    const [isFavoriteState, setIsFavoriteState] = useState(false)
     const posterSrc = movie.poster_path ? `${IMAGE_BASE_URL}${movie.poster_path}` : POSTER_PLACEHOLDER
+
+    useEffect(() => {
+        setIsFavoriteState(isFavorite(movie.id))
+    }, [movie.id])
+
+    useEffect(() => {
+        const handleFavoritesChange = () => {
+            setIsFavoriteState(isFavorite(movie.id))
+        }
+        
+        window.addEventListener('favoritesChanged', handleFavoritesChange)
+        return () => window.removeEventListener('favoritesChanged', handleFavoritesChange)
+    }, [movie.id])
 
     const toggleFavorite = (event: React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault()
         event.stopPropagation()
-        setIsFavorite((prev) => !prev)
+        const posterUrl = movie.poster_path ? `${IMAGE_BASE_URL}${movie.poster_path}` : POSTER_PLACEHOLDER
+        const newFavoriteState = toggleFavoriteUtil({
+            id: movie.id,
+            title: movie.title,
+            posterUrl: posterUrl,
+            voteAverage: movie.vote_average,
+        })
+        setIsFavoriteState(newFavoriteState)
     }
 
     const detailsPath = Path.MovieDetails.replace(":movieId", String(movie.id))
@@ -76,8 +97,8 @@ export const MovieCard = ({movie}: MovieCardProps) => {
                 <Typography variant="body2" color="text.secondary">
                     Голоса: {movie.vote_count}
                 </Typography>
-                <IconButton onClick={toggleFavorite} color={isFavorite ? "error" : "default"}>
-                    {isFavorite ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+                <IconButton onClick={toggleFavorite} color={isFavoriteState ? "error" : "default"} aria-label="Add to favorites">
+                    {isFavoriteState ? <FavoriteIcon /> : <FavoriteBorderIcon />}
                 </IconButton>
             </CardActions>
         </Card>
