@@ -10,3 +10,19 @@
   margin: 0;
   text-transform: uppercase;
 }
+
+.typography404 {
+  font-size: 200px;
+  font-weight: bold;
+  color: cornflowerblue;
+  margin-bottom: 2px;
+  line-height: 1;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 60vh;
+  justify-content: center
+}
