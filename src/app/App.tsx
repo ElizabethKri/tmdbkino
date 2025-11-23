@@ -7,12 +7,16 @@ import {getTheme} from "@/common/theme"
 import CssBaseline from "@mui/material/CssBaseline"
 import {ThemeProvider} from "@mui/material/styles"
 import styles from "./App.module.css"
+import {useGlobalLoading} from "@/common/hooks/useGlobalLoading.ts";
+import {LinearProgress} from "@mui/material";
 
 export const App = () => {
 
   const themeMode = useAppSelector(selectThemeMode)
 
   const theme = getTheme(themeMode)
+
+  const isGlobalLoading = useGlobalLoading()
 
 
   // if (isLoading) {
@@ -28,6 +32,7 @@ export const App = () => {
       <div className={styles.app}>
         <CssBaseline />
         <Header />
+        {isGlobalLoading && <LinearProgress />}
         <main className={styles.main}>
           <Routing />
         </main>
