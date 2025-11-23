@@ -1,6 +1,7 @@
 import { SxProps } from "@mui/material"
 
 export  const textFieledSx: SxProps = {
+
     backgroundColor: 'rgba(4,8,30,0.42)',
     '& .MuiOutlinedInput-root': {
         color: 'white',
@@ -18,7 +19,7 @@ export  const textFieledSx: SxProps = {
         color: 'rgb(255,255,255)',
         opacity: 1,
     },
-    width: '200px',
+    maxWidth: '500px',
 }
 
 export  const buttonSearchSx: SxProps = {
