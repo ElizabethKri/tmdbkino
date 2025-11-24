@@ -1,13 +1,14 @@
 import Container from "@mui/material/Container"
 import Typography from "@mui/material/Typography"
 import Box from "@mui/material/Box"
-import CircularProgress from "@mui/material/CircularProgress"
 import {useFetchMainQuery, useFetchTopRatedQuery, useFetchUpcomingQuery, useFetchNowPlayingQuery} from "@/features/movies/api/MainApi"
 import {useMemo} from "react";
 import {Movie} from "@/features/movies/api/MainApi.types.ts";
 import {BackdropHero} from "@/features/movies/ui/Main/BackdropHero/BackdropHero.tsx";
 import {Path} from "@/common/routing";
 import {MoviesSection} from "@/features/movies/ui/Main/MoviesSection/MoviesSection";
+import {MoviesSectionSkeleton} from "@/common/components";
+import Skeleton from "@mui/material/Skeleton";
 
 
 export const Main = () => {
@@ -29,11 +30,31 @@ export const Main = () => {
 
     if (isLoading) {
         return (
-            <Container maxWidth={"lg"}>
-                <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
-                    <CircularProgress />
+            <>
+                <Box
+                    sx={{
+                        position: 'relative',
+                        width: '100%',
+                        height: { xs: '400px', md: '600px' },
+                        mb: 4,
+                        backgroundColor: 'action.hover',
+                    }}
+                >
+                    <Container maxWidth={"lg"} sx={{ position: 'relative', height: '100%', display: 'flex', alignItems: 'center' }}>
+                        <Box sx={{ width: '100%' }}>
+                            <Skeleton variant="text" width="60%" height={60} sx={{ mb: 2 }} />
+                            <Skeleton variant="text" width="80%" height={24} sx={{ mb: 1 }} />
+                            <Skeleton variant="text" width="70%" height={24} />
+                        </Box>
+                    </Container>
                 </Box>
-            </Container>
+                <Container maxWidth={"lg"}>
+                    <MoviesSectionSkeleton count={6} />
+                    <MoviesSectionSkeleton count={6} />
+                    <MoviesSectionSkeleton count={6} />
+                    <MoviesSectionSkeleton count={6} />
+                </Container>
+            </>
         )
     }
 

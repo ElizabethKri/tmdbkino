@@ -9,13 +9,14 @@ import Select, {SelectChangeEvent} from "@mui/material/Select"
 import MenuItem from "@mui/material/MenuItem"
 import Slider from "@mui/material/Slider"
 import Button from "@mui/material/Button"
-import CircularProgress from "@mui/material/CircularProgress"
 import Pagination from "@mui/material/Pagination"
 import Stack from "@mui/material/Stack"
 import {useSearchParams} from "react-router"
-import {MovieCard} from "@/common/components"
+import {MovieCard, MovieCardSkeleton} from "@/common/components"
 import {useDiscoverMoviesQuery, useFetchMovieGenresQuery} from "@/features/movies/api/MainApi"
 import {Genre} from "@/features/movies/api/MainApi.types.ts"
+import CircularProgress from "@mui/material/CircularProgress"
+import Skeleton from "@mui/material/Skeleton"
 
 const SORT_OPTIONS = [
     { value: "popularity.desc", label: "По популярности (убывание)" },
@@ -226,12 +227,20 @@ export const FilteredMovies = () => {
                     </Box>
                 </Grid>
 
-
+                // @ts-ignore - Grid item is valid in MUI
                 <Grid item xs={12} md={9}>
                     {isLoading && (
-                        <Box sx={{ display: 'flex', justifyContent: 'center', mt: 6 }}>
-                            <CircularProgress />
-                        </Box>
+                        <>
+                            <Skeleton variant="text" width={200} height={32} sx={{ mb: 3 }} />
+                            <Grid container spacing={3}>
+                                {Array.from({ length: 9 }).map((_, index) => (
+                                    // @ts-ignore - Grid item is valid in MUI
+                                    <Grid item xs={12} sm={6} md={4} key={index}>
+                                        <MovieCardSkeleton />
+                                    </Grid>
+                                ))}
+                            </Grid>
+                        </>
                     )}
 
                     {isError && !isLoading && (

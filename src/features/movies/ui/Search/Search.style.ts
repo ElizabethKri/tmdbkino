@@ -24,8 +24,12 @@ export  const textFieledSx: SxProps = {
 
 export  const buttonSearchSx: SxProps = {
     textTransform: 'none',
-    backgroundColor: 'rgb(68,75,90)',
+    backgroundColor: 'rgb(2,8,46)',
     '&:hover': {
-        backgroundColor: 'rgba(255, 255, 255, 0.3)',
+        backgroundColor: 'rgb(7,27,71)',
     },
+    '&:disabled' : {
+    backgroundColor: 'rgb(7,27,71, 0.74)',
+    color: "white",
+}
 }

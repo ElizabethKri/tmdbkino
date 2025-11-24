@@ -27,7 +27,9 @@ export const SearchMain = () => {
         <Box sx={{ display: 'flex', gap: 2, mb: 4 }}>
             <Search value={searchQuery}
                     onChangeHandler={(e) => setSearchQuery (e.target.value)}
-                    onKeyPress={handleKeyPress} handleSearch={handleSearch}
+                    onKeyPress={handleKeyPress} 
+                    handleSearch={handleSearch}
+                    disabled={!searchQuery.trim()}
             />
         </Box>
     );

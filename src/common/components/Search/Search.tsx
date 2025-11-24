@@ -2,16 +2,18 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import {ChangeEvent} from "react";
+import {buttonSearchSx} from "@/features/movies/ui/Search/Search.style.ts";
 
 export type SearchType = {
     value: string,
     onChangeHandler: (e: ChangeEvent<HTMLInputElement>) => void,
     handleSearch: () => void,
-    onKeyPress: (e: React.KeyboardEvent) => void
+    onKeyPress: (e: React.KeyboardEvent) => void,
+    disabled: boolean
 }
 
 
-export const Search = ({value, onChangeHandler, handleSearch, onKeyPress}: SearchType) => {
+export const Search = ({value, onChangeHandler, handleSearch, onKeyPress, disabled}: SearchType) => {
 
     //const themeMode = useAppSelector(selectThemeMode)
 
@@ -31,7 +33,8 @@ export const Search = ({value, onChangeHandler, handleSearch, onKeyPress}: Searc
             <Button
                 variant="contained"
                 onClick={handleSearch}
-                sx={{ textTransform: 'none', px: 4 }}
+                disabled={disabled}
+                sx={buttonSearchSx}
             >
                 Search
             </Button>

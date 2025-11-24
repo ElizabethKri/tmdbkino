@@ -4,11 +4,12 @@ import {useSearchParams} from "react-router"
 import {useSearchMoviesQuery} from "@/features/movies/api/SearchApi"
 import Grid from "@mui/material/Grid"
 import Box from "@mui/material/Box"
-import CircularProgress from "@mui/material/CircularProgress"
 import {MovieCard} from "@/common/components/MovieCard/MovieCard"
+import {MovieCardSkeleton} from "@/common/components"
 import Pagination from "@mui/material/Pagination"
 import {ChangeEvent, useEffect, useState} from "react"
 import Search from "@/common/components/Search/Search"
+import Skeleton from "@mui/material/Skeleton"
 
 export const SearchPage = () => {
     const [searchParams, setSearchParams] = useSearchParams()
@@ -17,6 +18,8 @@ export const SearchPage = () => {
     const page = Number.isNaN(pageParam) || pageParam < 1 ? 1 : pageParam
     
     const [searchInput, setSearchInput] = useState(query)
+    const [disabledBtn, setDisabledBtn] = useState('')
+
 
     useEffect(() => {
         setSearchInput(query)
@@ -32,17 +35,24 @@ export const SearchPage = () => {
         if (trimmedQuery) {
             setSearchParams({query: trimmedQuery, page: "1"})
         }
+
+
     }
 
     const handleKeyPress = (e: React.KeyboardEvent) => {
         if (e.key === 'Enter') {
             handleSearch()
         }
+
     }
 
     const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value
         setSearchInput(value)
+
+        if (disabledBtn.trim()) {
+            setDisabledBtn('')
+        }
         
         // Если поле очищено через крестик (значение стало пустым)
         if (value === "") {
@@ -58,6 +68,7 @@ export const SearchPage = () => {
 
     const totalPages = data ? Math.min(data.total_pages, 500) : 0
 
+
     return (
         <Container maxWidth={"lg"} sx={{ py: 4 }}>
             <Typography variant="h4" component="h1" sx={{ mb: 4 }}>
@@ -67,7 +78,10 @@ export const SearchPage = () => {
 
             
             <Box sx={{ display: 'flex', gap: 2, mb: 4 }}>
-                <Search handleSearch={handleSearch} value={searchInput} onChangeHandler={handleInputChange} onKeyPress={handleKeyPress} />
+                <Search handleSearch={handleSearch} value={searchInput}
+                        onChangeHandler={handleInputChange} onKeyPress={handleKeyPress}
+                        disabled={!disabledBtn.trim()}
+                />
             </Box>
 
             {!query && (
@@ -77,9 +91,17 @@ export const SearchPage = () => {
             )}
 
             {query && isLoading && (
-                <Box sx={{ display: 'flex', justifyContent: 'center', mt: 6 }}>
-                    <CircularProgress />
-                </Box>
+                <>
+                    <Skeleton variant="text" width={300} height={32} sx={{ mb: 3 }} />
+                    <Grid container spacing={3}>
+                        {Array.from({ length: 12 }).map((_, index) => (
+                            // @ts-ignore - Grid item is valid in MUI
+                            <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
+                                <MovieCardSkeleton />
+                            </Grid>
+                        ))}
+                    </Grid>
+                </>
             )}
 
             {query && isError && !isLoading && (

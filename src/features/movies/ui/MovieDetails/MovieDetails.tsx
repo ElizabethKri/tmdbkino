@@ -1,13 +1,13 @@
 import Container from "@mui/material/Container"
 import Typography from "@mui/material/Typography"
 import Box from "@mui/material/Box"
-import CircularProgress from "@mui/material/CircularProgress"
 import Chip from "@mui/material/Chip"
 import Button from "@mui/material/Button"
+import Skeleton from "@mui/material/Skeleton"
 import {Link, useParams} from "react-router"
 import {useFetchMovieDetailsQuery} from "@/features/movies/api/MainApi"
 import {Path} from "@/common/routing"
-import {BoxMovieSx, BoxTextSx, ImgSx} from "@/features/movies/ui/MovieDetails/MovieDetails.style.ts";
+import {BoxTextSx, ImgSx} from "@/features/movies/ui/MovieDetails/MovieDetails.style.ts";
 
 
 const IMAGE_BASE_URL = "https://image.tmdb.org/t/p/original"
@@ -22,11 +22,61 @@ export const MovieDetails = () => {
 
     if (isLoading) {
         return (
-            <Container maxWidth={"lg"}>
-                <Box sx={BoxMovieSx}>
-                    <CircularProgress />
+            <Box sx={{ pb: 6 }}>
+                <Box
+                    sx={{
+                        ...BoxTextSx,
+                        backgroundColor: 'action.hover',
+                    }}
+                >
+                    <Container maxWidth={"lg"} sx={{ position: "relative", height: "100%" }}>
+                        <Box sx={{ position: "absolute", bottom: 24 }}>
+                            <Skeleton variant="text" width="60%" height={60} sx={{ mb: 2, bgcolor: 'rgba(255,255,255,0.3)' }} />
+                            <Skeleton variant="text" width="80%" height={28} sx={{ bgcolor: 'rgba(255,255,255,0.2)' }} />
+                        </Box>
+                    </Container>
                 </Box>
-            </Container>
+
+                <Container maxWidth={"lg"}>
+                    <Box sx={{ display: "flex", flexDirection: { xs: "column", md: "row" }, gap: 4, mt: 4 }}>
+                        <Skeleton
+                            variant="rectangular"
+                            sx={{
+                                width: { xs: '100%', md: '300px' },
+                                height: { xs: '450px', md: '450px' },
+                                borderRadius: 2,
+                                flexShrink: 0,
+                            }}
+                        />
+
+                        <Box sx={{ flex: 1 }}>
+                            <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1, mb: 2 }}>
+                                <Skeleton variant="rectangular" width={120} height={32} sx={{ borderRadius: 1 }} />
+                                <Skeleton variant="rectangular" width={140} height={32} sx={{ borderRadius: 1 }} />
+                                <Skeleton variant="rectangular" width={100} height={32} sx={{ borderRadius: 1 }} />
+                            </Box>
+
+                            <Skeleton variant="text" width={150} height={40} sx={{ mb: 2 }} />
+                            <Skeleton variant="text" width="100%" height={24} sx={{ mb: 1 }} />
+                            <Skeleton variant="text" width="100%" height={24} sx={{ mb: 1 }} />
+                            <Skeleton variant="text" width="90%" height={24} sx={{ mb: 3 }} />
+
+                            <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2, mb: 2 }}>
+                                <Skeleton variant="text" width={150} height={20} />
+                                <Skeleton variant="text" width={120} height={20} />
+                            </Box>
+
+                            <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap", mb: 3 }}>
+                                <Skeleton variant="rectangular" width={80} height={32} sx={{ borderRadius: 1 }} />
+                                <Skeleton variant="rectangular" width={90} height={32} sx={{ borderRadius: 1 }} />
+                                <Skeleton variant="rectangular" width={70} height={32} sx={{ borderRadius: 1 }} />
+                            </Box>
+
+                            <Skeleton variant="rectangular" width={180} height={40} sx={{ borderRadius: 1 }} />
+                        </Box>
+                    </Box>
+                </Container>
+            </Box>
         )
     }
 

@@ -2,13 +2,13 @@ import Container from "@mui/material/Container"
 import Typography from "@mui/material/Typography"
 import Box from "@mui/material/Box"
 import Button from "@mui/material/Button"
-import CircularProgress from "@mui/material/CircularProgress"
 import Pagination from "@mui/material/Pagination"
 import Grid from "@mui/material/Grid"
 import {useSearchParams} from "react-router"
 import {MovieCard} from "@/common/components/MovieCard/MovieCard"
 import {MovieCategory} from "@/features/movies/api/MainApi.types.ts"
 import {useFetchMoviesByCategoryQuery} from "@/features/movies/api/MainApi"
+import {MovieCardSkeleton} from "@/common/components"
 
 const CATEGORY_OPTIONS: { value: MovieCategory; label: string; title: string }[] = [
     { value: "popular", label: "Popular", title: "Popular Movies" },
@@ -67,9 +67,14 @@ export const CategoryMovies = () => {
             </Typography>
 
             {isLoading && (
-                <Box sx={{ display: "flex", justifyContent: "center", mt: 6 }}>
-                    <CircularProgress />
-                </Box>
+                <Grid container spacing={3}>
+                    {Array.from({ length: 12 }).map((_, index) => (
+                        // @ts-ignore - Grid item is valid in MUI
+                        <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
+                            <MovieCardSkeleton />
+                        </Grid>
+                    ))}
+                </Grid>
             )}
 
             {isError && !isLoading && (
