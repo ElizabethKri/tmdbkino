@@ -19,144 +19,150 @@ import CircularProgress from "@mui/material/CircularProgress"
 import Skeleton from "@mui/material/Skeleton"
 
 const SORT_OPTIONS = [
-    { value: "popularity.desc", label: "По популярности (убывание)" },
-    { value: "popularity.asc", label: "По популярности (возрастание)" },
-    { value: "vote_average.desc", label: "По рейтингу (убывание)" },
-    { value: "vote_average.asc", label: "По рейтингу (возрастание)" },
-    { value: "primary_release_date.desc", label: "По дате выпуска (убывание)" },
-    { value: "primary_release_date.asc", label: "По дате выпуска (возрастание)" },
-    { value: "original_title.asc", label: "По названию (А-Я)" },
-    { value: "original_title.desc", label: "По названию (Я-А)" },
+    {value: "popularity.desc", label: "По популярности (убывание)"},
+    {value: "popularity.asc", label: "По популярности (возрастание)"},
+    {value: "vote_average.desc", label: "По рейтингу (убывание)"},
+    {value: "vote_average.asc", label: "По рейтингу (возрастание)"},
+    {value: "primary_release_date.desc", label: "По дате выпуска (убывание)"},
+    {value: "primary_release_date.asc", label: "По дате выпуска (возрастание)"},
+    {value: "original_title.asc", label: "По названию (А-Я)"},
+    {value: "original_title.desc", label: "По названию (Я-А)"},
 ]
 
 const DEFAULT_SORT = SORT_OPTIONS[0].value
 const DEFAULT_RATING_RANGE: [number, number] = [0, 10]
 
 export const FilteredMovies = () => {
-    const [searchParams, setSearchParams] = useSearchParams()
+    const [searchParams, setSearchParams] = useSearchParams ()
 
-    const sortBy = searchParams.get("sort_by") ?? DEFAULT_SORT
-    const pageParam = Number(searchParams.get("page") ?? "1")
-    const page = Number.isNaN(pageParam) || pageParam < 1 ? 1 : pageParam
+    const sortBy = searchParams.get ("sort_by") ?? DEFAULT_SORT
+    const pageParam = Number (searchParams.get ("page") ?? "1")
+    const page = Number.isNaN (pageParam) || pageParam < 1 ? 1 : pageParam
 
-    const ratingMinParam = Number(searchParams.get("vote_average_gte") ?? DEFAULT_RATING_RANGE[0])
-    const ratingMaxParam = Number(searchParams.get("vote_average_lte") ?? DEFAULT_RATING_RANGE[1])
+    const ratingMinParam = Number (searchParams.get ("vote_average_gte") ?? DEFAULT_RATING_RANGE[0])
+    const ratingMaxParam = Number (searchParams.get ("vote_average_lte") ?? DEFAULT_RATING_RANGE[1])
     const ratingParamRange: [number, number] = [
-        Number.isNaN(ratingMinParam) ? DEFAULT_RATING_RANGE[0] : ratingMinParam,
-        Number.isNaN(ratingMaxParam) ? DEFAULT_RATING_RANGE[1] : ratingMaxParam,
+        Number.isNaN (ratingMinParam) ? DEFAULT_RATING_RANGE[0] : ratingMinParam,
+        Number.isNaN (ratingMaxParam) ? DEFAULT_RATING_RANGE[1] : ratingMaxParam,
     ]
 
-    const selectedGenres = useMemo(() => {
-        const rawGenres = searchParams.get("with_genres")
+    const selectedGenres = useMemo (() => {
+        const rawGenres = searchParams.get ("with_genres")
         if (!rawGenres) return []
-        return rawGenres.split(",").filter(Boolean)
+        return rawGenres.split (",").filter (Boolean)
     }, [searchParams])
 
-    const [sliderValue, setSliderValue] = useState<[number, number]>(ratingParamRange)
-    const [debouncedSliderValue, setDebouncedSliderValue] = useState<[number, number]>(ratingParamRange)
+    const [sliderValue, setSliderValue] = useState<[number, number]> (ratingParamRange)
+    const [debouncedSliderValue, setDebouncedSliderValue] = useState<[number, number]> (ratingParamRange)
 
-    useEffect(() => {
-        setSliderValue(ratingParamRange)
-        setDebouncedSliderValue(ratingParamRange)
+    useEffect (() => {
+        setSliderValue (ratingParamRange)
+        setDebouncedSliderValue (ratingParamRange)
     }, [ratingParamRange[0], ratingParamRange[1]])
 
-    useEffect(() => {
-        const handler = setTimeout(() => {
-            setDebouncedSliderValue(sliderValue)
+    useEffect (() => {
+        const handler = setTimeout (() => {
+            setDebouncedSliderValue (sliderValue)
         }, 200)
-        return () => clearTimeout(handler)
+        return () => clearTimeout (handler)
     }, [sliderValue])
 
-    const updateParams = useCallback((updates: Record<string, string | null>) => {
-        const newParams = new URLSearchParams(searchParams)
-        Object.entries(updates).forEach(([key, value]) => {
+    const updateParams = useCallback ((updates: Record<string, string | null>) => {
+        const newParams = new URLSearchParams (searchParams)
+        Object.entries (updates).forEach (([key, value]) => {
             if (value === null) {
-                newParams.delete(key)
+                newParams.delete (key)
             } else {
-                newParams.set(key, value)
+                newParams.set (key, value)
             }
         })
-        setSearchParams(newParams)
+        setSearchParams (newParams)
     }, [searchParams, setSearchParams])
 
-    useEffect(() => {
+    useEffect (() => {
         const [min, max] = debouncedSliderValue
-        const currentMin = Number(ratingParamRange[0].toFixed(1))
-        const currentMax = Number(ratingParamRange[1].toFixed(1))
-        const nextMin = Number(min.toFixed(1))
-        const nextMax = Number(max.toFixed(1))
+        const currentMin = Number (ratingParamRange[0].toFixed (1))
+        const currentMax = Number (ratingParamRange[1].toFixed (1))
+        const nextMin = Number (min.toFixed (1))
+        const nextMax = Number (max.toFixed (1))
 
         if (currentMin === nextMin && currentMax === nextMax) return
 
-        updateParams({
-            "vote_average_gte": nextMin.toFixed(1),
-            "vote_average_lte": nextMax.toFixed(1),
+        updateParams ({
+            "vote_average_gte": nextMin.toFixed (1),
+            "vote_average_lte": nextMax.toFixed (1),
             page: "1",
         })
     }, [debouncedSliderValue, ratingParamRange, updateParams])
 
-    const { data: genresData, isLoading: genresLoading } = useFetchMovieGenresQuery()
+    const {data: genresData, isLoading: genresLoading} = useFetchMovieGenresQuery ()
 
-    const { data, isLoading, isError } = useDiscoverMoviesQuery({
+    const {data, isLoading, isError} = useDiscoverMoviesQuery ({
         sort_by: sortBy,
         page,
         vote_average_gte: ratingParamRange[0],
         vote_average_lte: ratingParamRange[1],
-        with_genres: selectedGenres.length ? selectedGenres.join(",") : undefined,
+        with_genres: selectedGenres.length ? selectedGenres.join (",") : undefined,
     })
 
-    const totalPages = data ? Math.min(data.total_pages, 500) : 0
+    const totalPages = data ? Math.min (data.total_pages, 500) : 0
 
     const handleSortChange = (event: SelectChangeEvent) => {
-        updateParams({
+        updateParams ({
             sort_by: event.target.value,
             page: "1",
         })
     }
 
     const handleSliderChange = (_: Event, newValue: number | number[]) => {
-        if (Array.isArray(newValue)) {
-            setSliderValue([newValue[0], newValue[1]])
+        if (Array.isArray (newValue)) {
+            setSliderValue ([newValue[0], newValue[1]])
         }
     }
 
     const toggleGenre = (id: number) => {
-        const idString = String(id)
-        const exists = selectedGenres.includes(idString)
-        const nextGenres = exists ? selectedGenres.filter((genreId) => genreId !== idString) : [...selectedGenres, idString]
+        const idString = String (id)
+        const exists = selectedGenres.includes (idString)
+        const nextGenres = exists ? selectedGenres.filter ((genreId) => genreId !== idString) : [...selectedGenres, idString]
 
-        updateParams({
-            with_genres: nextGenres.length ? nextGenres.join(",") : null,
+        updateParams ({
+            with_genres: nextGenres.length ? nextGenres.join (",") : null,
             page: "1",
         })
     }
 
     const handleReset = () => {
-        updateParams({
+        updateParams ({
             sort_by: DEFAULT_SORT,
-            vote_average_gte: DEFAULT_RATING_RANGE[0].toFixed(1),
-            vote_average_lte: DEFAULT_RATING_RANGE[1].toFixed(1),
+            vote_average_gte: DEFAULT_RATING_RANGE[0].toFixed (1),
+            vote_average_lte: DEFAULT_RATING_RANGE[1].toFixed (1),
             with_genres: null,
             page: "1",
         })
-        setSliderValue(DEFAULT_RATING_RANGE)
-        setDebouncedSliderValue(DEFAULT_RATING_RANGE)
+        setSliderValue (DEFAULT_RATING_RANGE)
+        setDebouncedSliderValue (DEFAULT_RATING_RANGE)
     }
 
     const handlePageChange = (_event: ChangeEvent<unknown>, value: number) => {
-        updateParams({
-            page: value.toString(),
+        updateParams ({
+            page: value.toString (),
         })
     }
 
+
     return (
-        <Container maxWidth={"lg"} sx={{ py: 4 }}>
-            <Typography variant="h4" component="h1" sx={{ mb: 4 }}>
+        <Container maxWidth={"lg"} sx={{py: 4}}>
+            <Typography variant="h4" component="h1" sx={{mb: 4}}>
                 Filtered Movies
             </Typography>
-            <Grid container spacing={4}>
-                <Grid item xs={12} md={3}>
-                    <Box sx={{ position: "sticky", top: 100, border: (theme) => `1px solid ${theme.palette.divider}`, borderRadius: 2, p: 3 }}>
+                <Grid  container spacing={4} size={{xs: 12, md: 3}}>
+                    <Box sx={{
+                        position: "sticky",
+                        top: 100,
+                        border: (theme) => `1px solid ${theme.palette.divider}`,
+                        borderRadius: 2,
+                        p: 3
+                    }}>
                         <Stack spacing={3}>
                             <Typography variant="h6">Сортировка</Typography>
                             <FormControl fullWidth>
@@ -167,7 +173,7 @@ export const FilteredMovies = () => {
                                     label="Сортировка"
                                     onChange={handleSortChange}
                                 >
-                                    {SORT_OPTIONS.map((option) => (
+                                    {SORT_OPTIONS.map ((option) => (
                                         <MenuItem key={option.value} value={option.value}>
                                             {option.label}
                                         </MenuItem>
@@ -176,7 +182,7 @@ export const FilteredMovies = () => {
                             </FormControl>
 
                             <Box>
-                                <Typography variant="h6" sx={{ mb: 2 }}>
+                                <Typography variant="h6" sx={{mb: 2}}>
                                     Фильтр по рейтингу
                                 </Typography>
                                 <Slider
@@ -187,31 +193,31 @@ export const FilteredMovies = () => {
                                     valueLabelDisplay="auto"
                                     onChange={handleSliderChange}
                                 />
-                                <Box sx={{ display: "flex", justifyContent: "space-between", mt: 1 }}>
-                                    <Typography variant="body2">от {sliderValue[0].toFixed(1)}</Typography>
-                                    <Typography variant="body2">до {sliderValue[1].toFixed(1)}</Typography>
+                                <Box sx={{display: "flex", justifyContent: "space-between", mt: 1}}>
+                                    <Typography variant="body2">от {sliderValue[0].toFixed (1)}</Typography>
+                                    <Typography variant="body2">до {sliderValue[1].toFixed (1)}</Typography>
                                 </Box>
                             </Box>
 
                             <Box>
-                                <Typography variant="h6" sx={{ mb: 2 }}>
+                                <Typography variant="h6" sx={{mb: 2}}>
                                     Жанры
                                 </Typography>
                                 {genresLoading && (
-                                    <Box sx={{ display: "flex", justifyContent: "center", my: 2 }}>
-                                        <CircularProgress size={24} />
+                                    <Box sx={{display: "flex", justifyContent: "center", my: 2}}>
+                                        <CircularProgress size={24}/>
                                     </Box>
                                 )}
-                                <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1 }}>
-                                    {genresData?.genres.map((genre: Genre) => {
-                                        const isActive = selectedGenres.includes(String(genre.id))
+                                <Box sx={{display: "flex", flexWrap: "wrap", gap: 1}}>
+                                    {genresData?.genres.map ((genre: Genre) => {
+                                        const isActive = selectedGenres.includes (String (genre.id))
                                         return (
                                             <Button
                                                 key={genre.id}
                                                 variant={isActive ? "contained" : "outlined"}
                                                 size="small"
-                                                onClick={() => toggleGenre(genre.id)}
-                                                sx={{ textTransform: "none" }}
+                                                onClick={() => toggleGenre (genre.id)}
+                                                sx={{textTransform: "none"}}
                                             >
                                                 {genre.name}
                                             </Button>
@@ -225,18 +231,16 @@ export const FilteredMovies = () => {
                             </Button>
                         </Stack>
                     </Box>
-                </Grid>
 
-                // @ts-ignore - Grid item is valid in MUI
                 <Grid item xs={12} md={9}>
                     {isLoading && (
                         <>
-                            <Skeleton variant="text" width={200} height={32} sx={{ mb: 3 }} />
+                            <Skeleton variant="text" width={200} height={32} sx={{mb: 3}}/>
                             <Grid container spacing={3}>
-                                {Array.from({ length: 9 }).map((_, index) => (
+                                {Array.from ({length: 9}).map ((_, index) => (
                                     // @ts-ignore - Grid item is valid in MUI
                                     <Grid item xs={12} sm={6} md={4} key={index}>
-                                        <MovieCardSkeleton />
+                                        <MovieCardSkeleton/>
                                     </Grid>
                                 ))}
                             </Grid>
@@ -244,33 +248,33 @@ export const FilteredMovies = () => {
                     )}
 
                     {isError && !isLoading && (
-                        <Typography color="error" sx={{ mt: 3 }}>
+                        <Typography color="error" sx={{mt: 3}}>
                             Не удалось загрузить фильмы. Попробуйте еще раз.
                         </Typography>
                     )}
 
                     {!isLoading && data && data.results.length === 0 && (
-                        <Typography sx={{ mt: 3 }}>
+                        <Typography sx={{mt: 3}}>
                             Фильмы не найдены. Попробуйте изменить параметры поиска.
                         </Typography>
                     )}
 
                     {data && data.results.length > 0 && (
                         <>
-                            <Typography variant="subtitle1" sx={{ mb: 2 }}>
+                            <Typography variant="subtitle1" sx={{mb: 2}}>
                                 Найдено фильмов: {data.total_results}
                             </Typography>
                             <Grid container spacing={3}>
-                                {data.results.map((movie) => (
+                                {data.results.map ((movie) => (
                                     // @ts-ignore - Grid item is valid in MUI
                                     <Grid item xs={12} sm={6} md={4} key={movie.id}>
-                                        <MovieCard movie={movie} />
+                                        <MovieCard movie={movie}/>
                                     </Grid>
                                 ))}
                             </Grid>
 
                             {totalPages > 1 && (
-                                <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
+                                <Box sx={{display: "flex", justifyContent: "center", mt: 4}}>
                                     <Pagination
                                         count={totalPages}
                                         page={page}

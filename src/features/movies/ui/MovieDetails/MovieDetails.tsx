@@ -19,6 +19,7 @@ export const MovieDetails = () => {
     const numericId = Number(movieId)
     const shouldSkip = !movieId || Number.isNaN(numericId)
     const {data, isLoading, isError} = useFetchMovieDetailsQuery(numericId, { skip: shouldSkip })
+    console.log(data)
 
     if (isLoading) {
         return (
