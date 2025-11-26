@@ -232,7 +232,7 @@ export const FilteredMovies = () => {
                         </Stack>
                     </Box>
 
-                <Grid item xs={12} md={9}>
+                <Grid size = {{xs: 12, md: 9}} >
                     {isLoading && (
                         <>
                             <Skeleton variant="text" width={200} height={32} sx={{mb: 3}}/>
