@@ -1,4 +1,3 @@
-import Typography from "@mui/material/Typography"
 import Box from "@mui/material/Box"
 import Skeleton from "@mui/material/Skeleton"
 import {MovieCardSkeleton} from "@/common/components/MovieCardSkeleton/MovieCardSkeleton"
@@ -37,3 +36,4 @@ export const MoviesSectionSkeleton = ({count = 6}: MoviesSectionSkeletonProps) =
         </Box>
     )
 }
+

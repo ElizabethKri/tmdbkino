@@ -2,7 +2,7 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import {ChangeEvent} from "react";
-import {buttonSearchSx} from "@/features/movies/ui/Search/Search.style.ts";
+import {buttonSearchSx, textFieledSx} from "@/features/movies/ui/Search/Search.style.ts";
 
 export type SearchType = {
     value: string,
@@ -27,7 +27,7 @@ export const Search = ({value, onChangeHandler, handleSearch, onKeyPress, disabl
                 value={value}
                 onChange={onChangeHandler}
                 onKeyPress={onKeyPress}
-                sx={{ maxWidth: 500, background: 'white'  }}
+                sx={textFieledSx}
 
             />
             <Button

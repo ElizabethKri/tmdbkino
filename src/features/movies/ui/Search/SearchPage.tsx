@@ -50,9 +50,12 @@ export const SearchPage = () => {
         const value = e.target.value
         setSearchInput(value)
 
-        if (disabledBtn.trim()) {
+        if (value.trim()) {
+            setDisabledBtn(value)
+        } else {
             setDisabledBtn('')
         }
+
         
         // Если поле очищено через крестик (значение стало пустым)
         if (value === "") {
